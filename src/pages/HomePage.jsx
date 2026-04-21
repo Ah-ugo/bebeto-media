@@ -135,7 +135,7 @@ export default function HomePage() {
 
   return (
     <div style={{ background: 'var(--bg)' }}>
-      <VideoHero />
+      <VideoHero items={featuredItems} />
 
       {/* ── TICKER ─────────────────────────────────────────── */}
       <div
