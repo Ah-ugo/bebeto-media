@@ -398,9 +398,79 @@ export default function AdminPortfolio() {
                   type='file'
                   accept='image/*'
                   multiple
+                  onChange={handleFileChange}
                   style={{ display: 'none' }}
                 />
               </div>
+
+              {selectedFiles.length > 0 && (
+                <div style={{ marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      fontFamily: 'Montserrat,sans-serif',
+                      fontSize: '0.58rem',
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      color: 'var(--fg-4)',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    Selected Files ({selectedFiles.length})
+                  </div>
+                  <div
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}
+                  >
+                    {selectedFiles.map((file, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          background: 'var(--bg-3)',
+                          border: '1px solid var(--border)',
+                          padding: '5px 10px',
+                          borderRadius: '2px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: 'Montserrat,sans-serif',
+                            fontSize: '0.7rem',
+                            color: 'var(--fg-2)',
+                            maxWidth: '120px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {file.name}
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedFiles((prev) =>
+                              prev.filter((_, idx) => idx !== i),
+                            );
+                          }}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                            color: 'var(--fg-4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <X size={10} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div
                 style={{
                   fontFamily: 'Montserrat,sans-serif',
