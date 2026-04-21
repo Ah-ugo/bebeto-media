@@ -45,4 +45,59 @@ api.interceptors.response.use(
   },
 );
 
+export const authAPI = {
+  login: (data) => api.post('/auth/login', data),
+  register: (data) => api.post('/auth/register', data),
+};
+
+export const bookingsAPI = {
+  getAll: (params) => api.get('/bookings/', { params }),
+  getById: (id) => api.get(`/bookings/${id}`),
+  create: (data) => api.post('/bookings/', data),
+  updateStatus: (id, data) => api.patch(`/bookings/${id}/status`, data),
+};
+
+export const packagesAPI = {
+  getAll: () => api.get('/packages/'),
+  create: (data) => api.post('/packages/', data),
+  update: (id, data) => api.put(`/packages/${id}`, data),
+  delete: (id) => api.delete(`/packages/${id}`),
+};
+
+export const availabilityAPI = {
+  month: (year, month) => api.get(`/availability/month/${year}/${month}`),
+  block: (data) => api.post('/availability/block', data),
+  unblock: (date) => api.delete(`/availability/unblock/${date}`),
+};
+
+export const portfolioAPI = {
+  getAll: (params) => api.get('/portfolio/', { params }),
+  upload: (data) =>
+    api.post('/portfolio/upload', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  delete: (id) => api.delete(`/portfolio/${id}`),
+};
+
+export const reviewsAPI = {
+  getAll: () => api.get('/reviews/'),
+  create: (data) => api.post('/reviews/', data),
+};
+
+export const dashboardAPI = {
+  stats: () => api.get('/dashboard/stats'),
+};
+
+export const chatAPI = {
+  getConversations: () => api.get('/chat/conversations'),
+};
+
+export const createChatWS = (roomId, token) => {
+  const wsUrl =
+    (
+      import.meta.env.VITE_API_URL || 'https://bebeto-api.onrender.com/api/v1'
+    ).replace('http', 'ws') + `/chat/ws/${roomId}?token=${token}`;
+  return new WebSocket(wsUrl);
+};
+
 export default api;

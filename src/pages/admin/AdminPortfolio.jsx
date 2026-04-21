@@ -35,9 +35,14 @@ export default function AdminPortfolio() {
       toast.error('Select images and add a title');
       return;
     }
+
     const fd = new FormData();
-    Array.from(files).forEach((f) => fd.append('files', f));
-    Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+    // Ensure files are appended as individual parts, not a nested array
+    for (let i = 0; i < files.length; i++) {
+      fd.append('files', files[i]);
+    }
+    Object.entries(form).forEach(([k, v]) => fd.append(k, v.toString()));
+
     setUploading(true);
     try {
       const r = await portfolioAPI.upload(fd);
