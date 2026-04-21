@@ -106,7 +106,7 @@ export default function HomePage() {
   useEffect(() => {
     const t = setInterval(nextReview, 6000);
     portfolioAPI
-      .getAll({ featured: true, page_size: 6 })
+      .getAll({ featured: true, page_size: 7 })
       .then((r) => {
         const items = r.data.items.map((item) => ({
           ...item,
@@ -710,47 +710,20 @@ export default function HomePage() {
             gap: '6px',
           }}
         >
-          {[
-            {
-              src: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=700&q=75',
-              col: 'span 2',
-              row: 'span 2',
-            },
-            {
-              src: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=75',
-            },
-            {
-              src: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=400&q=75',
-            },
-            {
-              src: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=75',
-            },
-            {
-              src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=75',
-            },
-            {
-              src: 'https://images.unsplash.com/photo-1511895426328-dc8714191011?w=400&q=75',
-            },
-            {
-              src: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&q=75',
-            },
-          ].map((img, i) => (
+          {featuredItems.map((img, i) => (
             <motion.button
-              key={i}
+              key={img.id || i}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
               onClick={() =>
-                setLightbox({
-                  images: featuredItems,
-                  startIndex: Math.min(i, featuredItems.length - 1),
-                })
+                setLightbox({ images: featuredItems, startIndex: i })
               }
               className='img-zoom'
               style={{
-                gridColumn: img.col,
-                gridRow: img.row,
+                gridColumn: i === 0 ? 'span 2' : undefined,
+                gridRow: i === 0 ? 'span 2' : undefined,
                 aspectRatio: '1',
                 border: 'none',
                 padding: 0,
@@ -759,8 +732,8 @@ export default function HomePage() {
               }}
             >
               <img
-                src={img.src}
-                alt=''
+                src={img.url}
+                alt={img.title}
                 loading='lazy'
                 style={{
                   width: '100%',
