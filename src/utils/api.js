@@ -73,7 +73,7 @@ export const availabilityAPI = {
 export const portfolioAPI = {
   getAll: (params) => api.get('/portfolio/', { params }),
   upload: (data) =>
-    api.post('/portfolio/upload', data, {
+    api.post('/portfolio/', data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
   delete: (id) => api.delete(`/portfolio/${id}`),

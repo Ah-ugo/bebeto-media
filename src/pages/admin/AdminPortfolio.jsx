@@ -16,6 +16,7 @@ export default function AdminPortfolio() {
   const [uploading, setUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const fileRef = useRef(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [form, setForm] = useState({
     title: '',
     category: 'weddings',
@@ -30,7 +31,7 @@ export default function AdminPortfolio() {
       .finally(() => setLoading(false));
   }, []);
   const doUpload = async () => {
-    const files = fileRef.current?.files;
+    const files = selectedFiles;
     if (!files?.length || !form.title.trim()) {
       toast.error('Select images and add a title');
       return;
@@ -55,12 +56,19 @@ export default function AdminPortfolio() {
         tags: '',
         is_featured: false,
       });
-      if (fileRef.current) fileRef.current.value = '';
+      setSelectedFiles([]); // Clear selected files
+      if (fileRef.current) fileRef.current.value = ''; // Clear file input value
       toast.success('Uploaded!');
     } catch (e) {
       toast.error(e.response?.data?.detail || 'Upload failed');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      setSelectedFiles(Array.from(e.target.files));
     }
   };
   const doDelete = async (id) => {
